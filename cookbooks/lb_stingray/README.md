@@ -61,6 +61,11 @@ converge.
 This parameter is not meant to be changed by the end user.  It selects a version
 of the software to install and is only present to avoid cookbook duplication.
 
+#### lb\_stingray/binary\_hash
+
+This parameter is not meant to be changed by the end user.  It contains an MD5 
+hash of the software install package to validate the download.
+
 #### lb\_stingray/java\_enabled
 
 This is used to specify whether or not Java Extensions should be enabled on the
