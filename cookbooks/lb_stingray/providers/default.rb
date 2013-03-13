@@ -12,14 +12,18 @@ action :install do
     # Read in pretty version of the version number (include "." so as not to confuse people!)
     full_version = node[:lb_stingray][:version]
 
-    # Check to ensure we've received a valid version number.
+    # Check to ensure we've received a valid version number and bail out if not.
     if not version =~ /^[0-9]{1,2}\.[0-9](r[1-9]){0,1}$/
         log "An invalid Stingray version number was detected."
-        # TODO: bail out somehow
+        action :nothing
     end 
 
     # Convert to the version number we actually use
     version = full_version.gsub(".", "")
+
+    # Read in the MD5 hash (binary_hash attribute) of the software binary.  This is used in the 
+    #   S3 path and to validate the download.
+    binary_hash = node[:lb_stingray][:binary_hash]
 
     # Hard-code architecture
     arch = "x86_64"
@@ -32,7 +36,7 @@ action :install do
     end
 
     # Set the URL of the installation file location in S3
-    s3bucket = "http://s3.amazonaws.com/stingray-rightscale-#{version}-a57a56ee8b4936501ffa85c76fa3dc9e/"
+    s3bucket = "http://s3.amazonaws.com/stingray-rightscale-#{version}-#{binary_hash}/"
 
     # The temporary directory that the binary package will be extracted to.
     directory "/tmp/#{packagename}" do
@@ -50,6 +54,7 @@ action :install do
        cwd "/tmp"
        # Resume partial transfers, print no console output.
        command "wget --continue --quiet #{s3bucket}#{packagename}.tgz"
+       # TODO: check the MD5 hash of the downloaded file against the expected value and EXPLODE if necessary
     end
 
     # Replay file for non-interactive installation of Stingray.
