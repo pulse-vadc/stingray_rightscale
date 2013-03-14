@@ -28,14 +28,14 @@ enabled.  A JRE must be installed on the host in order for this to function.",
 
 attribute 'lb_stingray/version',
 :display_name => "Version",
-:description => "Software version to install (eg. 9.1). DO NOT CHANGE THIS VALUE.",
+:description => "Software version to install (eg. 9.0r1 or 9.1). DO NOT CHANGE THIS VALUE.",
 :required => "required",
 :type => "string",
 :recipes => ["lb_stingray::default"]
 
 attribute 'lb_stingray/binary_hash',
 :display_name => "Binary Hash",
-:description => "MD5 hash of the software binary to install. This servers two purposes: to validate the download and to make the S3 URL hard to guess. DO NOT CHANGE THIS VALUE.",
+:description => "MD5 hash of the software binary to install. DO NOT CHANGE THIS VALUE.",
 :required => "required",
 :type => "string",
 :recipes => ["lb_stingray::default"]
