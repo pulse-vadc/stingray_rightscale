@@ -16,6 +16,8 @@ end
 log "Override load balancer to use Stingray."
 node[:lb][:service][:provider] = "lb_stingray"
 
+log "Running action :install"
 action :install
+log "Completed! (In theory :S)"
 
 rightscale_marker :end
