@@ -74,7 +74,7 @@ action :install do
         tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
         notifies :delete, resources(
             :file => "/tmp/#{packagename}.tgz",
-            :directory => "/tmp/#{packagename}",
+            :directory => "/tmp/ZeusTM_#{version}_Linux-#{arch}",
             :template => "/tmp/install_replay"
         ), :delayed
     end
