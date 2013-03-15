@@ -82,8 +82,7 @@ action :install do
         cwd "/tmp"
         #log "Performing initial configuration..."
         command "\
-        tar xzvf #{packagename}.tgz &&
-        ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
+        tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
         notifies :delete, resources(
             :file => "/tmp/#{packagename}.tgz",
             :directory => "/tmp/#{packagename}",
