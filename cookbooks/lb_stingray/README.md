@@ -56,7 +56,7 @@ of software binary that is compatible with the license key that is being used.
 If this value is changed, it's very likely that an instance will fail to
 converge.
 
-#### lb\_stingray/version
+#### lb\_stingray/software\_version
 
 This parameter is not meant to be changed by the end user.  It selects a version
 of the software to install and is only present to avoid cookbook duplication.

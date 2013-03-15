@@ -12,11 +12,11 @@ action :install do
     log "Installing Stingray Traffic Manager..."
 
     # Read in pretty version of the version number (include "." so as not to confuse people!)
-    full_version = node[:lb_stingray][:version]
+    full_version = node[:lb_stingray][:software_version]
 
 
     # Check to ensure we've received a valid version number and bail out if not.
-    if not version =~ /^[0-9]{1,2}\.[0-9](r[1-9]){0,1}$/
+    if not full_version =~ /^[0-9]{1,2}\.[0-9](r[1-9]){0,1}$/
         log "An invalid Stingray version number was detected."
         action :nothing
     else

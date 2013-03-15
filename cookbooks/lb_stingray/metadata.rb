@@ -3,7 +3,7 @@ maintainer_email "mgeldert@riverbed.com"
 license          "Copyright Riverbed, Inc. All rights reserved."
 description      "Installs/Configures lb_stingray"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "13.2.0"
+version          "13.3.0"
 
 # supports "centos", "~> 5.8", "~> 6"
 # supports "redhat", "~> 5.8"
@@ -26,8 +26,8 @@ enabled.  A JRE must be installed on the host in order for this to function.",
 :recipes => [ "lb_stingray::default" ],
 :default => "no"
 
-attribute 'lb_stingray/version',
-:display_name => "Version",
+attribute 'lb_stingray/software_version',
+:display_name => "Software Version",
 :description => "Software version to install (eg. 9.0r1 or 9.1). DO NOT CHANGE THIS VALUE.",
 :required => "required",
 :type => "string",
