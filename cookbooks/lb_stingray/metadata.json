@@ -98,5 +98,5 @@
   "recipes": {
     "lb_stingray::default": "This loads the required 'lb' resource using the\nStingray provider."
   },
-  "version": "13.3.0"
+  "version": "13.2.0"
 }
