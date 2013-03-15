@@ -9,18 +9,13 @@ include RightScale::LB::Helper
 
 action :install do
 
-    #log "Installing Stingray Traffic Manager..."
-
     # Read in pretty version of the version number (include "." so as not to confuse people!)
     full_version = node[:lb_stingray][:software_version]
 
 
     # Check to ensure we've received a valid version number and bail out if not.
     if not full_version =~ /^[0-9]{1,2}\.[0-9](r[1-9]){0,1}$/
-        #log "An invalid Stingray version number was detected."
-        action :nothing
-    else
-        #log "Version #{full_version} selected."
+        raise "An invalid version number was provided. Installation aborted."
     end 
 
     # Convert to the version number we actually use
@@ -42,16 +37,14 @@ action :install do
 
     # Set the URL of the installation file location in S3
     s3bucket = "http://s3.amazonaws.com/stingray-rightscale-#{version}-#{binary_hash}/"
-    #log "Binary download path set to #{s3bucket}"
 
     # The temporary directory that the binary package will be extracted to.
-    directory "/tmp/#{packagename}" do
+    directory "/tmp/ZeusTM_#{version}_Linux-#{arch}" do
        recursive true
        action :nothing
     end
 
     file "/tmp/#{packagename}.tgz" do
-      #log "Existing installation package found"
       action :nothing
     end
 
@@ -60,16 +53,13 @@ action :install do
        creates "/tmp/#{packagename}.tgz"
        cwd "/tmp"
        # Resume partial transfers, print no console output.
-       #log "Downloading binary..."
        command "wget --continue --quiet #{s3bucket}#{packagename}.tgz"
-       #log "Download complete!"
        # TODO: check the MD5 hash of the downloaded file against the expected value and EXPLODE if necessary
     end
 
     # Replay file for non-interactive installation of Stingray.
     template "/tmp/install_replay" do
         not_if { ::File.exists?("/opt/riverbed/zxtm") }
-        #log "Existing configuration found."
         cookbook "lb_stingray"
         mode "0644"
         source "install.erb"
@@ -80,7 +70,6 @@ action :install do
     execute "deploy_binaries" do
         creates "/opt/riverbed"
         cwd "/tmp"
-        #log "Performing initial configuration..."
         command "\
         tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
         notifies :delete, resources(
@@ -88,7 +77,6 @@ action :install do
             :directory => "/tmp/#{packagename}",
             :template => "/tmp/install_replay"
         ), :delayed
-        #log "Initial configuration completed!"
     end
 
     # Add RS-specific tunings.
