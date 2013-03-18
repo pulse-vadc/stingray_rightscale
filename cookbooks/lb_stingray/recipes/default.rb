@@ -16,7 +16,7 @@ end
 log "Override load balancer to use Riverbed Stingray."
 node[:lb][:service][:provider] = "lb_stingray"
 
-if node[:lb][:pools] != nil
+if node[:lb][:pools] != ""
     log "Value for 'lb/pools' found.  Processing..."
     pool_list = node[:lb][:pools].gsub(/\s+/, "").split(",").uniq.map { |pool| [ pool.gsub(/[\/]/, '_'), pool ] }
 else
