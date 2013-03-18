@@ -17,10 +17,11 @@ log "Override load balancer to use Riverbed Stingray."
 node[:lb][:service][:provider] = "lb_stingray"
 
 if node[:lb][:pools] != nil
+    log "Value for 'lb/pools' found.  Processing..."
     pool_list = node[:lb][:pools].gsub(/\s+/, "").split(",").uniq.map { |pool| [ pool.gsub(/[\/]/, '_'), pool ] }
 else
-    log "Creating a 'default' virtual server because none was specified in the 'lb/pool_name' input and boot will fail without one" 
-    pool_list = ["default"]
+    log "Creating a 'default' virtual server because none was specified in the 'lb/pools' input and boot will fail without one" 
+#    pool_list = ["default"]
 end
 
 pool_list.each do |pool_name_short, pool_name_full|
