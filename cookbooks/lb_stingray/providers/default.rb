@@ -67,16 +67,30 @@ action :install do
     end
 
     # Unpack tarball and install software package
-    execute "deploy_binaries" do
-        creates "/opt/riverbed"
-        cwd "/tmp"
-        command "\
-        tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
-        notifies :delete, resources(
-            :file => "/tmp/#{packagename}.tgz",
-            :directory => "/tmp/ZeusTM_#{version}_Linux-#{arch}",
-            :template => "/tmp/install_replay"
-        ), :delayed
+    if node["cloud"]["provider"] == "ec2" then
+        execute "deploy_binaries" do
+            creates "/opt/riverbed"
+            cwd "/tmp"
+            command "\
+            tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --ec2 --replay-from=/tmp/install_replay"
+            notifies :delete, resources(
+                :file => "/tmp/#{packagename}.tgz",
+                :directory => "/tmp/ZeusTM_#{version}_Linux-#{arch}",
+                :template => "/tmp/install_replay"
+            ), :delayed
+        end
+    else
+        execute "deploy_binaries" do
+            creates "/opt/riverbed"
+            cwd "/tmp"
+            command "\
+            tar xzvf #{packagename}.tgz && ZeusTM_#{version}_Linux-#{arch}/zinstall --replay-from=/tmp/install_replay"
+            notifies :delete, resources(
+                :file => "/tmp/#{packagename}.tgz",
+                :directory => "/tmp/ZeusTM_#{version}_Linux-#{arch}",
+                :template => "/tmp/install_replay"
+            ), :delayed
+        end
     end
 
     # Add RS-specific tunings.
